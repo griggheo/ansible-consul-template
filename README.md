@@ -21,7 +21,7 @@ Depends on ansible-consul role if consul-template needs to talk to a local Consu
 Example Playbook
 ----------------
 
-
+```
 - hosts: consul-template-servers
   sudo: yes
   roles:
@@ -35,7 +35,7 @@ Example Playbook
     consul_bind_address: "{{ ansible_default_ipv4['address'] }}"
     use_systemd: true
     use_upstart: false
-
+```
 
 License
 -------
