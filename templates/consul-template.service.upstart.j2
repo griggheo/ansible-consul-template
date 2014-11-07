@@ -1,0 +1,10 @@
+# Consul Template (Upstart unit)
+description "Consul Template"
+start on (local-filesystems and net-device-up IFACE!=lo)
+stop on runlevel [06]
+
+exec {{ consul_template_home }}/bin/{{ consul_template_binary }}  -config={{ consul_template_home }}/config/{{ consul_template_config_file }} >> {{ consul_template_log_file }} 2>&1
+
+respawn
+respawn limit 10 10
+kill timeout 10

@@ -8,3 +8,5 @@ consul_template_log_level: "INFO"
 consul_template_user: root
 consul_template_group: root
 consul_server: "127.0.0.1"
+use_systemd: false
+use_upstart: false
