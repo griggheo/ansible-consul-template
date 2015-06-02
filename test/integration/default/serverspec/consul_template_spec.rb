@@ -9,6 +9,11 @@ describe 'Consul Template' do
     it { should be_file }
   end
 
+  describe file('/opt/consul-template/bin/consul-template') do
+    it { should be_file }
+    it { should be_executable }
+  end
+
   describe file('/opt/consul-template/config/consul-template.cfg') do
     it { should be_file }
   end

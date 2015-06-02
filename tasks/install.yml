@@ -26,12 +26,21 @@
     url: "{{ consul_template_download_url }}"
     dest: "/tmp"
 
-- unarchive:
+- name: unzip the downloaded package
+  unarchive:
     src: "/tmp/{{ consul_template_archive_file }}"
-    dest: "{{ consul_template_home }}/bin"
+    dest: "/tmp"
     owner: "root"
     group: "root"
-    creates: "{{ consul_template_home }}/bin/{{ consul_template_binary }}"
+    creates: "/tmp/{{ consul_template_release }}/{{ consul_template_binary }}"
+
+- name: copy consul-template binary into place
+  copy:
+    src: "/tmp/{{ consul_template_release }}/{{ consul_template_binary }}"
+    dest: "{{ consul_template_home }}/bin/{{ consul_template_binary }}"
+    owner: "root"
+    group: "root"
+    mode: "0755"
 
 - name: copy consul-template systemd service configuration
   template: >

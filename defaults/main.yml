@@ -1,7 +1,8 @@
 ---
 # defaults file for consul-template
 consul_template_version: "0.9.0"
-consul_template_archive_file: "consul-template_{{ consul_template_version }}_linux_amd64.tar.gz"
+consul_template_release: "consul-template_{{ consul_template_version }}_linux_amd64"
+consul_template_archive_file: "{{ consul_template_release }}.tar.gz"
 consul_template_download_url: "https://github.com/hashicorp/consul-template/releases/download/v{{ consul_template_version }}/{{ consul_template_archive_file }}"
 consul_template_binary: consul-template
 consul_template_home: /opt/consul-template
