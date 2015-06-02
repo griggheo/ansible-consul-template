@@ -66,6 +66,6 @@
 
 - name: consul-template config file
   template: >
-    src=consul-template.cfg.j2
+    src={{ consul_template_config_file_template }}
     dest={{ consul_template_home }}/config/{{ consul_template_config_file }}
     mode=0755
