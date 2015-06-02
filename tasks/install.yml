@@ -21,25 +21,31 @@
     - "{{ consul_template_home }}/config"
     - "{{ consul_template_home }}/templates"
 
-- name: copy consul-template binary
-  copy : >
-    src={{ consul_template_binary }}
-    dest={{ consul_template_home }}/bin
-    mode=0755
+- name: download consul-template binary
+  get_url:
+    url: "{{ consul_template_download_url }}"
+    dest: "/tmp"
+
+- unarchive:
+    src: "/tmp/{{ consul_template_archive_file }}"
+    dest: "{{ consul_template_home }}/bin"
+    owner: "root"
+    group: "root"
+    creates: "{{ consul_template_home }}/bin/{{ consul_template_binary }}"
 
 - name: copy consul-template systemd service configuration
   template: >
     src=consul-template.service.systemd.j2
     dest=/etc/systemd/system/consul-template.service
     mode=0755
-  when: use_systemd
+  when: consul_template_use_systemd
 
 - name: copy consul-template upstart service configuration
   template: >
     src=consul-template.service.upstart.j2
     dest=/etc/init/consul-template.conf
     mode=0755
-  when: use_upstart
+  when: consul_template_use_upstart
 
 - name: add consul-template to path through profile.d
   template: >

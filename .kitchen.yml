@@ -1,0 +1,18 @@
+---
+driver:
+  name: vagrant
+
+provisioner:
+  name: ansible_playbook
+  ansible_verbose: true
+  ansible_verbosity: 3
+  hosts: all
+
+platforms:
+  - name: trusty64
+    driver_config:
+      box: ubuntu/trusty64
+      box_url: https://atlas.hashicorp.com/ubuntu/trusty64
+
+suites:
+  - name: default

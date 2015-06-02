@@ -1,40 +1,31 @@
-Role Name
+Consul-Template
 =========
 
-Installs consul-template as either an upstart or systemd service.
-
-Requirements
-------------
-
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+Installs consul-template as either an Upstart or SystemD service.
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+```yml
+consul_template_version: "0.9.0"
+consul_template_archive_file: "consul-template_{{ consul_template_version }}_linux_amd64.tar.gz"
+consul_template_download_url: "https://github.com/hashicorp/consul-template/releases/download/v{{ consul_template_version }}/{{ consul_template_archive_file }}"
+consul_template_binary: consul-template
+consul_template_home: /opt/consul-template
+consul_template_config_file: consul-template.cfg
+consul_template_log_file: /var/log/consul-template
+consul_template_log_level: "INFO"
+consul_template_consul_server: "127.0.0.1"
+consul_template_use_systemd: false
+consul_template_use_upstart: false
+```
 
-Dependencies
-------------
-
-Depends on ansible-consul role if consul-template needs to talk to a local Consul server.
-
-Example Playbook
+Example Playbook Role Usage
 ----------------
 
 ```
-- hosts: consul-template-servers
-  sudo: yes
-  roles:
-    - ansible-consul
-    - ansible-consul-template
-  vars:
-    consul_is_ui: false
-    consul_is_server: true
-    consul_datacenter: "gce-us-central1-a"
-    consul_bootstrap: true
-    consul_bind_address: "{{ ansible_default_ipv4['address'] }}"
-    use_systemd: true
-    use_upstart: false
+roles:
+    - { role: consul-template, consul_template_use_upstart: true }
 ```
 
 License
