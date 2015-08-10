@@ -25,14 +25,14 @@
   get_url:
     url: "{{ consul_template_download_url }}"
     dest: "/tmp"
+  delegate_to: localhost
 
 - name: unzip the downloaded package
   unarchive:
     src: "/tmp/{{ consul_template_archive_file }}"
     dest: "/tmp"
-    owner: "root"
-    group: "root"
     creates: "/tmp/{{ consul_template_release }}/{{ consul_template_binary }}"
+  delegate_to: localhost
 
 - name: copy consul-template binary into place
   copy:
