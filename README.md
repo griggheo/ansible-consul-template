@@ -28,7 +28,7 @@ Example Playbook Role Usage
 
 Install and run consul-template using Upstart with a barebones config file that contains no template configuration.
 
-```
+```yml
 roles:
     - { role: consul-template,
         consul_template_use_upstart: true }
@@ -38,7 +38,7 @@ roles:
 
 Provide your own configuration file for consul-template.
 
-```
+```yml
 roles:
     - { role: consul-template,
         consul_template_config_file_template: "{{ playbook_dir }}/files/consul-template.cfg.j2"
