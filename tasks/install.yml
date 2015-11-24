@@ -32,11 +32,11 @@
     dest: "/tmp"
     owner: "root"
     group: "root"
-    creates: "/tmp/{{ consul_template_release }}/{{ consul_template_binary }}"
+    creates: "/tmp/{{ consul_template_binary }}"
 
 - name: copy consul-template binary into place
   copy:
-    src: "/tmp/{{ consul_template_release }}/{{ consul_template_binary }}"
+    src: "/tmp/{{ consul_template_binary }}"
     dest: "{{ consul_template_home }}/bin/{{ consul_template_binary }}"
     owner: "root"
     group: "root"
