@@ -21,23 +21,32 @@
     - "{{ consul_template_home }}/config"
     - "{{ consul_template_home }}/templates"
 
+- name: check archive stat
+  stat: path=/tmp/{{ consul_template_archive_file }}
+  register: consul_template_archive_stat
+
 - name: download consul-template binary
   get_url:
     url: "{{ consul_template_download_url }}"
     dest: "/tmp"
-  delegate_to: localhost
+  when: consul_template_archive_stat.stat.exists == False
 
 - name: unzip the downloaded package
   unarchive:
     src: "/tmp/{{ consul_template_archive_file }}"
     dest: "/tmp"
-    creates: "/tmp/{{ consul_template_release }}/{{ consul_template_binary }}"
-  delegate_to: localhost
+    owner: "root"
+    group: "root"
+    copy: False
+    creates: "/tmp/{{ consul_template_binary }}"
 
 - name: copy consul-template binary into place
-  copy:
-    src: "/tmp/{{ consul_template_release }}/{{ consul_template_binary }}"
-    dest: "{{ consul_template_home }}/bin/{{ consul_template_binary }}"
+  command: cp /tmp/{{ consul_template_binary }} {{ consul_template_home }}/bin/{{ consul_template_binary }}
+    creates={{ consul_template_home }}/bin/{{ consul_template_binary }}
+
+- name: Update consul-template permissions
+  file:
+    path: "{{ consul_template_home }}/bin/{{ consul_template_binary }}"
     owner: "root"
     group: "root"
     mode: "0755"
@@ -69,3 +78,10 @@
     src={{ consul_template_config_file_template }}
     dest={{ consul_template_home }}/config/{{ consul_template_config_file }}
     mode=0755
+
+- name: copy template files
+  copy: src={{ item.src }} dest="{{ consul_template_home }}/templates/{{ item.src | basename }}"
+  with_items: consul_template_template_files
+  when: consul_template_template_files
+  notify: restart consul-template
+

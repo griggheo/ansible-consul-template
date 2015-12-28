@@ -7,9 +7,12 @@ Role Variables
 --------------
 
 ```yml
-consul_template_version: "0.9.0"
-consul_template_archive_file: "consul-template_{{ consul_template_version }}_linux_amd64.tar.gz"
-consul_template_download_url: "https://github.com/hashicorp/consul-template/releases/download/v{{ consul_template_version }}/{{ consul_template_archive_file }}"
+---
+# defaults file for consul-template
+consul_template_version: "0.12.0"
+consul_template_release: "consul-template_{{ consul_template_version }}_linux_amd64"
+consul_template_archive_file: "{{ consul_template_release }}.zip"
+consul_template_download_url: "https://releases.hashicorp.com/consul-template/{{ consul_template_version }}/{{ consul_template_archive_file }}"
 consul_template_binary: consul-template
 consul_template_home: /opt/consul-template
 consul_template_config_file_template: consul-template.cfg.j2
@@ -19,6 +22,10 @@ consul_template_log_level: "INFO"
 consul_template_consul_server: "127.0.0.1"
 consul_template_use_systemd: false
 consul_template_use_upstart: false
+consul_template_template_files: # Copies your templates
+    - {src: "template.ctmpl"}
+consul_template_templates: # Defines templates in configuration
+    - {name: "template.ctmpl", dest: "/path/on/disk/where/template/will/render", cmd: "optional command to run when the template is updated", perms: 0600, backup: true}
 ```
 
 Example Playbook Role Usage

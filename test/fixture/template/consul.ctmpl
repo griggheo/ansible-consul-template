@@ -1,0 +1,2 @@
+{{range service "consul"}}
+consul server: {{.Node}} {{.Address}}:{{.Port}}{{end}}
