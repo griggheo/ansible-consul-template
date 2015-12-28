@@ -1,19 +1,16 @@
 consul = "{{ consul_template_consul_server }}:8500"
-
 {% if consul_template_templates %}
 {% for template in consul_template_templates %}
+
+
 template {
   source = "{{ consul_template_home }}/templates/{{ template.name }}"
   destination = "{{ template.dest }}"
-  {% if template.cmd is defined %}
-  command = "{{ template.cmd }}"
-  {% endif %}
-  {% if template.perms is defined %}
-  perms = {{ template.perms }}
-  {% endif %}
-  {% if template.backup is defined %}
-  backup = {{ template.backup }}
-  {% endif %}
-}
-{% endfor %}
+  {% if template.cmd is defined %}command = "{{ template.cmd }}"{% endif %}
+  
+  {% if template.perms is defined %}perms = {{ template.perms }}{% endif %}
+  
+  {% if template.backup is defined %}backup = {{ template.backup|lower }}{% endif %}
+
+}{% endfor %}
 {% endif %}
