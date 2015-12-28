@@ -22,7 +22,10 @@ consul_template_log_level: "INFO"
 consul_template_consul_server: "127.0.0.1"
 consul_template_use_systemd: false
 consul_template_use_upstart: false
-
+consul_template_template_files: # Copies your templates
+    - {src: "template.ctmpl"}
+consul_template_templates: # Defines templates in configuration
+    - {name: "template.ctmpl", dest: "/path/on/disk/where/template/will/render", cmd: "optional command to run when the template is updated", perms: 0600, backup: true}
 ```
 
 Example Playbook Role Usage
