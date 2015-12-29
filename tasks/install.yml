@@ -3,13 +3,23 @@
   apt: >
     update_cache=yes
     cache_valid_time=3600
+  when: ansible_os_family == "Debian"
 
-- name: install deps
+- name: install deps (Debian)
   apt: >
     pkg={{item}}
     state=installed
   with_items:
     - unzip
+  when: ansible_os_family == "Debian"
+
+- name: install deps (RedHat)
+  yum: >
+    pkg={{ item }}
+    state=installed
+  with_items:
+    - unzip
+  when: ansible_os_family == "RedHat"
 
 - name: create consul-template directory structure
   file: >
@@ -84,4 +94,3 @@
   with_items: consul_template_template_files
   when: consul_template_template_files
   notify: restart consul-template
-
