@@ -9,10 +9,15 @@ provisioner:
   hosts: all
 
 platforms:
-  - name: trusty64
+  - name: ubuntu/vivid64
     driver_config:
-      box: ubuntu/trusty64
-      box_url: https://atlas.hashicorp.com/ubuntu/trusty64
+      box: ubuntu/vivid64
+      box_url: https://atlas.hashicorp.com/ubuntu/vivid64
+
+  - name: centos/7
+    driver_config:
+      box: centos/7
+      box_url: https://atlas.hashicorp.com/centos/7
 
 suites:
   - name: default

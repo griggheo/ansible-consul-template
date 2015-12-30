@@ -13,6 +13,10 @@
     - unzip
   when: ansible_os_family == "Debian"
 
+- name: fail with Fedora 22+
+  fail: msg="Fedora 22+ is not supported yet because it uses dnf"
+  when: ansible_distribution == "Fedora" and ansible_distribution_major_version|int >= 22
+
 - name: install deps (RedHat)
   yum: >
     pkg={{ item }}
