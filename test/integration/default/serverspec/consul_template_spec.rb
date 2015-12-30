@@ -5,10 +5,6 @@ describe 'Consul Template' do
     it { should be_enabled }
   end
 
-  describe file('/var/log/consul-template') do
-    it { should be_file }
-  end
-
   describe file('/opt/consul-template/bin/consul-template') do
     it { should be_file }
     it { should be_executable }
@@ -20,6 +16,6 @@ describe 'Consul Template' do
 
   describe command('/opt/consul-template/bin/consul-template -v') do
     its(:exit_status) { should eq 0 }
-    its(:stderr) { should match /v0\.11\.1/ }
+    its(:stderr) { should match /v0\.12\.0/ }
   end
 end
