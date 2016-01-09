@@ -20,6 +20,7 @@ consul_template_config_file: consul-template.cfg
 consul_template_log_file: /var/log/consul-template
 consul_template_log_level: "INFO"
 consul_template_consul_server: "127.0.0.1"
+consul_template_consul_port: "8500"
 consul_template_use_systemd: false
 consul_template_use_upstart: false
 consul_template_template_files: # Copies your templates
