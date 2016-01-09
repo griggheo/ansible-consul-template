@@ -1,4 +1,4 @@
-consul = "{{ consul_template_consul_server }}:8500"
+consul = "{{ consul_template_consul_server }}:{{ consul_template_consul_port }}"
 {% if consul_template_templates %}
 {% for template in consul_template_templates %}
 
