@@ -67,8 +67,20 @@ http://agiletesting.blogspot.com
 Contributors
 ------------
 
+Robbie Trencheny
+https://github.com/robbiet480
+
 Travis Truman
 https://github.com/trumant
 
 Marc Abramowitz
 https://github.com/msabramo
+
+Guido Garcia
+https://github.com/palmerabollo
+
+Damjan Znidarsic
+https://github.com/spinx
+
+David Wittman
+https://github.com/DavidWittman
