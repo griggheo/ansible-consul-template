@@ -1,7 +1,7 @@
 ---
 
 - hosts: all
-  sudo: true
+  become: yes
   roles:
     - savagegus.consul
     - ansible-consul-template

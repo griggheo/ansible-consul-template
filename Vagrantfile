@@ -16,6 +16,6 @@ Vagrant.configure(2) do |config|
   config.vm.provision "ansible" do |ansible|
     ansible.playbook = "test.yml"
     ansible.verbose = 'vv'
-    ansible.sudo = true
+    ansible.become = true
   end
 end
