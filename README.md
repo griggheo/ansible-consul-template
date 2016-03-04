@@ -53,6 +53,22 @@ roles:
         consul_template_use_upstart: true }
 ```
 
+Testing
+-------
+
+To test the playbook locally, first install the required dependencies locally.
+
+```
+$ ansible-galaxy install --role-file=requirements.yml --roles-path=roles --force
+```
+
+Then run vagrant.
+
+```
+vagrant up
+vagrant provision
+```
+
 License
 -------
 

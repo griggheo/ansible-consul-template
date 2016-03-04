@@ -12,10 +12,11 @@ Vagrant.configure(2) do |config|
   #   # Customize the amount of memory on the VM:
   #   vb.memory = "1024"
   # end
-  
+
+
   config.vm.provision "ansible" do |ansible|
     ansible.playbook = "test.yml"
     ansible.verbose = 'vv'
-    ansible.become = true
+    ansible.sudo = true
   end
 end
