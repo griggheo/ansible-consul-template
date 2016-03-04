@@ -66,7 +66,6 @@ Then run vagrant.
 
 ```
 vagrant up
-vagrant provision
 ```
 
 License
