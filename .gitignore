@@ -2,3 +2,4 @@
 .bundle
 .vagrant
 bin/
+roles
