@@ -2,3 +2,4 @@
 .bundle
 .vagrant
 bin/
+meta/.galaxy_install_info
