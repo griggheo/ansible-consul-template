@@ -3,3 +3,4 @@
 .vagrant
 bin/
 roles
+meta/.galaxy_install_info
