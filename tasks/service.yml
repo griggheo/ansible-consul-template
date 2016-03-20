@@ -1,4 +1,4 @@
 - service: >
     name=consul-template
-    state=running
+    state=started
     enabled=yes
