@@ -1,0 +1,29 @@
+---
+
+- hosts: all
+  become: yes
+  pre_tasks:
+    - name: epel-repo
+      yum: 
+        name: epel-release
+        state: present
+  roles:
+    - savagegus.consul
+    - ansible-consul-template
+
+
+  vars:
+    # Consul
+    consul_version: 0.6.0
+    consul_is_server: true
+    consul_bootstrap_expect: 1
+    consul_use_systemd: true
+    consul_install_nginx: false
+
+    # Consul Template
+    consul_template_use_upstart: false
+    consul_template_use_systemd: true
+    consul_template_template_files:
+        - {src: ./test/fixture/template/consul.ctmpl}
+    consul_template_templates: 
+        - {name: "consul.ctmpl", dest: "/tmp/service-consul", cmd: "touch /tmp/service-consul-updated"}
