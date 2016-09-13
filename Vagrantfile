@@ -3,8 +3,6 @@
 
 Vagrant.configure(2) do |config|
 
-  config.vm.box = "ubuntu/trusty64"
-
   # config.vm.provider "virtualbox" do |vb|
   #   # Display the VirtualBox GUI when booting the machine
   #   vb.gui = true
@@ -14,11 +12,22 @@ Vagrant.configure(2) do |config|
   # end
 
   config.vm.define "test" do |test|
+    test.vm.box = "ubuntu/trusty64"
     test.vm.hostname = "test"
     test.vm.provision "ansible" do |ansible|
       ansible.playbook = "test.yml"
       ansible.verbose = 'vv'
       ansible.become = true
+    end
+  end
+  
+  config.vm.define "test02", autostart: false do |test02|
+    test02.vm.box = "centos/7"
+    test02.vm.hostname = "testrhel"
+    test02.vm.provision "ansible" do |ansible|
+      ansible.playbook = "testrhel.yml"
+      ansible.verbose = 'vv'
+      ansible.sudo = true 
     end
   end
 end
