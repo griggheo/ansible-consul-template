@@ -2,7 +2,11 @@
 Description=consul-template
 
 [Service]
+{% if consul_template_use_config_dir %}
+ExecStart=/bin/sh -c "{{ consul_template_home }}/bin/{{ consul_template_binary }}  -config={{ consul_template_home }}/config/ >> {{ consul_template_log_file }} 2>&1"
+{% else %}
 ExecStart=/bin/sh -c "{{ consul_template_home }}/bin/{{ consul_template_binary }}  -config={{ consul_template_home }}/config/{{ consul_template_config_file }} >> {{ consul_template_log_file }} 2>&1"
+{% endif %}
 
 [Install]
 WantedBy=multi-user.target
