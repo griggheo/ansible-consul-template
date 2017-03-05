@@ -94,8 +94,8 @@
     mode=0755
 
 - name: copy template files
-  copy: src={{ item.src }} dest="{{ consul_template_home }}/templates/{{ item.src | basename }}"
-  with_items: consul_template_template_files
+  copy: src="{{ item.src }}" dest="{{ consul_template_home }}/templates/{{ item.src | basename }}"
+  with_items: "{{ consul_template_template_files }}"
   when: consul_template_template_files
   notify: restart consul-template
 
