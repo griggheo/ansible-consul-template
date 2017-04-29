@@ -79,6 +79,15 @@
     mode=0755
   when: consul_template_use_upstart
 
+- name: copy consul-template init.d script
+  template: >
+    src={{consul_template_initd_template}}
+    dest=/etc/init.d/consul-template
+    owner=root
+    group=root
+    mode=0755
+  when: consul_template_use_initd
+
 - name: add consul-template to path through profile.d
   template: >
     src=consul-template.sh.j2
