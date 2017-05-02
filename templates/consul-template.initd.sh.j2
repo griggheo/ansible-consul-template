@@ -1,0 +1,112 @@
+#!/bin/sh
+#
+# consul-template - this script starts and stops the consul-template daemon
+#
+# chkconfig: 345 99 1
+# description:  consul-template
+# processname: consul-template
+
+### BEGIN INIT INFO
+# Provides:       consul-template
+# Required-Start: $local_fs $network
+# Required-Stop:  $local_fs $network
+# Default-Start: 3 4 5
+# Default-Stop:  0 1 2 6
+# Short-Description: Manage the consul-template service
+### END INIT INFO
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+# Source networking configuration.
+. /etc/sysconfig/network
+
+# Check that networking is up.
+[ "$NETWORKING" = "no" ] && exit 0
+
+exec="{{ consul_template_home }}/bin/{{ consul_template_binary }}"
+prog=${exec##*/}
+
+lockfile="/var/lock/subsys/$prog"
+pidfile="/var/run/${prog}.pid"
+logfile="/var/log/${prog}.log"
+sysconfig="/etc/sysconfig/$prog"
+{% if consul_template_use_config_dir %}
+config="{{ consul_template_home }}/config"
+{% else %}
+config="{{ consul_template_home }}/config/{{ consul_template_config_file }}"
+{% endif %}
+
+[ -f $sysconfig ] && . $sysconfig
+
+start() {
+    [ -x $exec ] || exit 5
+    [ -d $confdir ] || exit 6
+
+    echo -n $"Starting $prog: "
+    touch $logfile $pidfile
+    daemon "{ $exec $OPTIONS -config=$config &>> $logfile & }; echo \$! >| $pidfile"
+
+    RETVAL=$?
+    [ $RETVAL -eq 0 ] && touch $lockfile
+    echo
+    return $RETVAL
+}
+
+stop() {
+    echo -n $"Stopping $prog: "
+    killproc -p $pidfile $exec 2>> $logfile
+    RETVAL=$?
+    [ $RETVAL -eq 0 ] && rm -f $lockfile
+    echo
+    return $RETVAL
+}
+
+restart() {
+    stop
+    start
+}
+
+reload() {
+    echo -n $"Reloading $prog: "
+    killproc -p $pidfile $exec -HUP
+    echo
+}
+
+force_reload() {
+    restart
+}
+
+rh_status() {
+    status $prog
+}
+
+rh_status_q() {
+    rh_status >/dev/null 2>&1
+}
+
+case "$1" in
+    start)
+        rh_status_q && exit 0
+        $1
+        ;;
+    stop)
+        rh_status_q || exit 0
+        $1
+        ;;
+    restart)
+        $1
+        ;;
+    status)
+        rh_status
+        ;;
+    condrestart|try-restart)
+        rh_status_q || exit 7
+        restart
+        ;;
+    *)
+        echo $"Usage: $0 {start|stop|status|restart|condrestart|try-restart}"
+        exit 2
+esac
+
+exit $?
