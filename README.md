@@ -23,6 +23,8 @@ consul_template_consul_server: "127.0.0.1"
 consul_template_consul_port: "8500"
 consul_template_use_systemd: false
 consul_template_use_upstart: false
+consul_template_use_initd: false
+consul_template_initd_template: "consul-template.initd.sh.j2"
 consul_template_wait: <undefined>
 consul_template_template_files: # Copies your templates
     - {src: "template.ctmpl"}
