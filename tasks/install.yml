@@ -36,26 +36,26 @@
     - "{{ consul_template_home }}/templates"
 
 - name: check archive stat
-  stat: path=/tmp/{{ consul_template_archive_file }}
+  stat: path={{ consul_template_staging_area }}/{{ consul_template_archive_file }}
   register: consul_template_archive_stat
 
 - name: download consul-template binary
   get_url:
     url: "{{ consul_template_download_url }}"
-    dest: "/tmp"
+    dest: "{{ consul_template_staging_area }}"
   when: consul_template_archive_stat.stat.exists == False
 
 - name: unzip the downloaded package
   unarchive:
-    src: "/tmp/{{ consul_template_archive_file }}"
-    dest: "/tmp"
+    src: "{{ consul_template_staging_area }}/{{ consul_template_archive_file }}"
+    dest: "{{ consul_template_staging_area }}"
     owner: "root"
     group: "root"
     copy: False
-    creates: "/tmp/{{ consul_template_binary }}"
+    creates: "{{ consul_template_staging_area }}/{{ consul_template_binary }}"
 
 - name: copy consul-template binary into place
-  command: cp /tmp/{{ consul_template_binary }} {{ consul_template_home }}/bin/{{ consul_template_binary }}
+  command: cp {{ consul_template_staging_area }}/{{ consul_template_binary }} {{ consul_template_home }}/bin/{{ consul_template_binary }}
     creates={{ consul_template_home }}/bin/{{ consul_template_binary }}
 
 - name: Update consul-template permissions
