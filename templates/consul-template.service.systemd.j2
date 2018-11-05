@@ -8,6 +8,7 @@ ExecStart=/bin/sh -c "{{ consul_template_home }}/bin/{{ consul_template_binary }
 ExecStart=/bin/sh -c "{{ consul_template_home }}/bin/{{ consul_template_binary }}  -config={{ consul_template_home }}/config/{{ consul_template_config_file }} >> {{ consul_template_log_file }} 2>&1"
 {% endif %}
 
+KillSignal=SIGINT
 Restart=always
 RestartSec=5
 
