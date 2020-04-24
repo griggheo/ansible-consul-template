@@ -8,7 +8,7 @@
 - name: install deps (Debian)
   apt: >
     pkg={{item}}
-    state=installed
+    state=present
   with_items:
     - unzip
   when: ansible_os_family == "Debian"
@@ -20,7 +20,7 @@
 - name: install deps (RedHat)
   yum: >
     pkg={{ item }}
-    state=installed
+    state=present
   with_items:
     - unzip
   when: ansible_os_family == "RedHat"
