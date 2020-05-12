@@ -7,10 +7,8 @@
 
 - name: install deps (Debian)
   apt: >
-    pkg={{item}}
+    pkg=unzip
     state=present
-  with_items:
-    - unzip
   when: ansible_os_family == "Debian"
 
 - name: fail with Fedora 22+
@@ -19,10 +17,8 @@
 
 - name: install deps (RedHat)
   yum: >
-    pkg={{ item }}
+    pkg=unzip
     state=present
-  with_items:
-    - unzip
   when: ansible_os_family == "RedHat"
 
 - name: create consul-template directory structure
@@ -103,13 +99,13 @@
     mode=0755
 
 - name: copy template files
-  copy: src="{{ item.src }}" dest="{{ consul_template_home }}/templates/{{ item.src | basename }}"
+  copy: src="{{ item.src }}" dest="{{ consul_template_home }}/templates/{{ item.src | basename }}"
   with_items: "{{ consul_template_template_files }}"
-  when: consul_template_template_files
+  when: consul_template_template_files | length > 0
   notify: restart consul-template
 
 - name: copy template templates
   template: src={{ item.src }} dest="{{ consul_template_home }}/templates/{{ item.dest if item.dest is defined else item.src | basename | regex_replace('^(.*)\.j2$', '\\1') }}"
-  with_items: "{{ consul_template_template_templates | default([]) }}"
-  when: consul_template_template_templates
+  with_items: "{{ consul_template_template_templates }}"
+  when: consul_template_template_templates | length > 0
   notify: restart consul-template
