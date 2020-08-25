@@ -49,10 +49,12 @@
     group: "root"
     copy: False
     creates: "{{ consul_template_staging_area }}/{{ consul_template_binary }}"
+  when: not ansible_check_mode
 
 - name: copy consul-template binary into place
   command: cp {{ consul_template_staging_area }}/{{ consul_template_binary }} {{ consul_template_home }}/bin/{{ consul_template_binary }}
     creates={{ consul_template_home }}/bin/{{ consul_template_binary }}
+  when: not ansible_check_mode
 
 - name: Update consul-template permissions
   file:
