@@ -65,21 +65,21 @@
 
 - name: copy consul-template systemd service configuration
   template: >
-    src=consul-template.service.systemd.j2
+    src={{ consul_template_systemd_template }}
     dest=/etc/systemd/system/consul-template.service
     mode=0755
   when: consul_template_use_systemd
 
 - name: copy consul-template upstart service configuration
   template: >
-    src=consul-template.service.upstart.j2
+    src={{ consul_template_upstart_template }}
     dest=/etc/init/consul-template.conf
     mode=0755
   when: consul_template_use_upstart
 
 - name: copy consul-template init.d script
   template: >
-    src={{consul_template_initd_template}}
+    src={{ consul_template_initd_template }}
     dest=/etc/init.d/consul-template
     owner=root
     group=root
