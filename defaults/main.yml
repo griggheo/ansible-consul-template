@@ -23,3 +23,7 @@ consul_template_initd_template: "consul-template.initd.sh.j2"
 consul_template_template_files: [] # see readme for usage
 consul_template_templates: [] # - {name: "template.ctmpl", dest: "/path/on/disk/where/template/will/render", cmd: "optional command to run when the template is updated", perms: 0600, backup: false}
 consul_template_template_templates: [] # - {name: "template.ctmpl.j2", dest: "/path/on/disk/where/template/will/render", cmd: "optional command to run when the template is updated", perms: 0600, backup: true}
+consul_template_manage_user: false
+consul_template_manage_group: false
+consul_template_user: root
+consul_template_group: root

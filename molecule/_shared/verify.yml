@@ -1,0 +1,15 @@
+- name: Verify
+  hosts: all
+  become: true
+  tasks:
+  - name: Populate service facts
+    ansible.builtin.service_facts:
+  - name: Check service is running
+    ansible.builtin.assert:
+      that: ansible_facts.services['consul-template.service'].state == "running"
+  - name: Get consul-template version
+    ansible.builtin.command: /opt/consul-template/bin/consul-template --version
+    register: consul_template_version
+  - name: Assert consul-template version
+    ansible.builtin.assert:
+      that: consul_template_version.stdout.startswith("consul-template v0.27.2")
