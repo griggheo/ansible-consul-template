@@ -25,6 +25,9 @@
   file: >
     state=directory
     path={{ item }}
+    owner="{{ consul_template_user }}"
+    group="{{ consul_template_group }}"
+    mode="0750"
   with_items:
     - "{{ consul_template_home }}"
     - "{{ consul_template_home }}/bin"
@@ -67,6 +70,8 @@
   template: >
     src={{ consul_template_systemd_template }}
     dest=/etc/systemd/system/consul-template.service
+    owner=root
+    group=root
     mode=0755
   when: consul_template_use_systemd
 
@@ -74,6 +79,8 @@
   template: >
     src={{ consul_template_upstart_template }}
     dest=/etc/init/consul-template.conf
+    owner=root
+    group=root
     mode=0755
   when: consul_template_use_upstart
 

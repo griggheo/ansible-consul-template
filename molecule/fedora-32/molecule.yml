@@ -1,0 +1,29 @@
+---
+dependency:
+  name: galaxy
+  options:
+    role-file: ../_shared/requirements.yml
+driver:
+  name: docker
+platforms:
+  - name: instance
+    image: dokken/fedora-32
+    dockerfile: ../_shared/Dockerfile.j2
+    pre_build_image: false
+    command: /lib/systemd/systemd
+    capabilities:
+      - SYS_ADMIN
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    privileged: true
+provisioner:
+  name: ansible
+  inventory:
+    host_vars:
+      instance:
+        ansible_user: ansible
+  playbooks:
+    converge: ../_shared/converge.yml
+    verify: ../_shared/verify.yml
+verifier:
+  name: ansible

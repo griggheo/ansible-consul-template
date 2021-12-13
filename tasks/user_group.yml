@@ -1,0 +1,20 @@
+---
+# File: user_group.yml - User and group settings
+
+# Add group
+- name: Add Consul template group
+  group:
+    name: "{{ consul_template_group }}"
+    state: present
+  when:
+    - consul_template_manage_group | bool
+
+# Add user
+- name: Add Consul template user
+  user:
+    name: "{{ consul_template_user }}"
+    comment: "consul-template user"
+    group: "{{ consul_template_group }}"
+    system: true
+  when:
+    - consul_template_manage_user | bool
