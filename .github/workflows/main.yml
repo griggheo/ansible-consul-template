@@ -1,0 +1,25 @@
+on: push
+
+jobs:
+  molecule:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        scenario:
+          - centos-stream-9
+          - fedora-32
+          - redhat-ubi8
+          - ubuntu-18.04
+          - ubuntu-21.10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          path: "${{ github.repository }}"
+      - name: Molecule
+        uses: gofrolist/molecule-action@v2
+        with:
+          molecule_options: --base-config molecule/_shared/base.yml
+          molecule_command: test
+          molecule_args: --scenario-name ${{ matrix.scenario }}
