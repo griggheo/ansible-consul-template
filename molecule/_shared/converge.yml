@@ -1,0 +1,12 @@
+---
+- name: Converge
+  hosts: all
+  become: true
+  become_user: root
+  tasks:
+    - name: "Include ansible-consul-template"
+      include_role:
+        name: "ansible-consul-template"
+      vars:
+        consul_template_version: 0.27.2
+        consul_template_use_systemd: true
