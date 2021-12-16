@@ -1,3 +1,5 @@
+[![.github/workflows/main.yml](https://github.com/griggheo/ansible-consul-template/actions/workflows/main.yml/badge.svg)](https://github.com/griggheo/ansible-consul-template/actions/workflows/main.yml)
+
 Consul-Template
 =========
 
