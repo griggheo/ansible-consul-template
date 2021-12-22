@@ -19,6 +19,7 @@ consul_template_binary: consul-template
 consul_template_home: /opt/consul-template
 consul_template_config_file_template: consul-template.cfg.j2
 consul_template_config_file: consul-template.cfg
+consul_template_config_file_mode: "0755"
 consul_template_log_file: /var/log/consul-template
 consul_template_log_level: "INFO"
 consul_template_consul_server: "127.0.0.1"

@@ -105,7 +105,7 @@
   template: >
     src={{ consul_template_config_file_template }}
     dest={{ consul_template_home }}/config/{{ consul_template_config_file }}
-    mode=0755
+    mode={{ consul_template_config_file_mode }}
 
 - name: copy template files
   copy: src="{{ item.src }}" dest="{{ consul_template_home }}/templates/{{ item.src | basename }}"
