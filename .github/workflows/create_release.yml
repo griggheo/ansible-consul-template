@@ -1,0 +1,17 @@
+---
+name: "Create Release"
+on:
+  push:
+    branches:
+      - master
+jobs:
+  create-gh-release:
+    name: "Create GitHub Release"
+    runs-on: ubuntu-latest
+    outputs:
+      release-number: ${{ steps.create-release.outputs.release-number}}
+      release-notes-body: ${{ steps.create-release.outputs.release-notes-body }}
+    steps:
+      - name: Create Release
+        id: create-release
+        uses: mindbox-moscow/github-actions/create-github-release@master
