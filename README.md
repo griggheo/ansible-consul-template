@@ -11,7 +11,7 @@ Role Variables
 ```yml
 ---
 # defaults file for consul-template
-consul_template_version: "0.15.0"
+consul_template_version: "0.20.0"
 consul_template_release: "consul-template_{{ consul_template_version }}_linux_amd64"
 consul_template_archive_file: "{{ consul_template_release }}.zip"
 consul_template_download_url: "https://releases.hashicorp.com/consul-template/{{ consul_template_version }}/{{ consul_template_archive_file }}"
