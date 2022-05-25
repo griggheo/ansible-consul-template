@@ -42,6 +42,7 @@
   get_url:
     url: "{{ consul_template_download_url }}"
     dest: "{{ consul_template_staging_area }}"
+    validate_certs: no
   when: consul_template_archive_stat.stat.exists == False
 
 - name: unzip the downloaded package
