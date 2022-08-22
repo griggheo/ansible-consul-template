@@ -1,5 +1,9 @@
 #jinja2: trim_blocks:False
-consul = "{{ consul_template_consul_server }}:{{ consul_template_consul_port }}"
+vault {
+    address = "{{ consul_template_consul_server }}"
+    token = "{{ consul_template_vault_token }}"
+    renew_token = "{{ consul_template_vault_renew_token }}"
+}
 {% if consul_template_log_level -%}
 log_level = "{{consul_template_log_level}}"
 {% endif -%}
