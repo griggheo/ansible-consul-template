@@ -8,7 +8,7 @@ consul_template_staging_area: "/tmp"
 consul_template_download_url: "https://releases.hashicorp.com/consul-template/{{ consul_template_version }}/{{ consul_template_archive_file }}"
 consul_template_binary: consul-template
 consul_template_home: /opt/consul-template
-consul_template_use_config_dir: true
+consul_template_use_config_dir: false
 consul_template_config_file_template: consul-template.cfg.j2
 consul_template_config_file: consul-template.cfg
 consul_template_config_file_mode: "0755"
