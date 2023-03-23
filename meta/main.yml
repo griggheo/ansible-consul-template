@@ -2,41 +2,34 @@
 galaxy_info:
   author: Grig Gheorghiu
   description: Ansible role for installing and configuring consul-template
-  role_name: griggheo.ansible_consul_template
+  role_name: consul_template
   license: license (Apache)
-  min_ansible_version: 1.2
+  min_ansible_version: '1.2'
   platforms:
-  - name: Ubuntu
-    versions:
-    - all
-  #  - lucid
-  #  - maverick
-  #  - natty
-  #  - oneiric
-  #  - precise
-  #  - quantal
-  #  - raring
-  #  - saucy
-  #  - trusty
-  - name: Debian
-    versions:
-    - all
-  #  - etch
-  #  - lenny
-  #  - squeeze
-  #  - wheezy
-  - name: EL
-    versions:
-    - 6
-    - 7
-  categories:
-  - cloud
-  - cloud:ec2
-  - cloud:gce
-  - cloud:rax
-  - clustering
-  - monitoring
-  - networking
+    - name: Ubuntu
+      versions:
+        - all
+      #  - lucid
+      #  - maverick
+      #  - natty
+      #  - oneiric
+      #  - precise
+      #  - quantal
+      #  - raring
+      #  - saucy
+      #  - trusty
+    - name: Debian
+      versions:
+        - all
+      #  - etch
+      #  - lenny
+      #  - squeeze
+      #  - wheezy
+  galaxy_tags:
+    - cloud
+    - clustering
+    - monitoring
+    - networking
 dependencies: []
   # List your role dependencies here, one per line. Only
   # dependencies available via galaxy should be listed here.

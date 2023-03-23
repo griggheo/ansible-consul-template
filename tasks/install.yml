@@ -1,120 +1,118 @@
 ---
-- name: update apt
-  apt: >
-    update_cache=yes
-    cache_valid_time=3600
-  when: ansible_os_family == "Debian"
-
-- name: install deps (Debian)
-  apt: >
-    pkg=unzip
-    state=present
-  when: ansible_os_family == "Debian"
-
-- name: fail with Fedora 22+
-  fail: msg="Fedora 22+ is not supported yet because it uses dnf"
+- name: Fail with Fedora 22+
+  ansible.builtin.fail:
+    msg: "Fedora 22+ is not supported yet because it uses dnf"
   when: ansible_distribution == "Fedora" and ansible_distribution_major_version|int >= 22
 
-- name: install deps (RedHat)
-  yum: >
-    pkg=unzip
-    state=present
+- name: Install deps (RedHat)
+  ansible.builtin.yum:
+    pkg: unzip
+    state: present
   when: ansible_os_family == "RedHat"
 
-- name: create consul-template directory structure
-  file: >
-    state=directory
-    path={{ item }}
-    owner="{{ consul_template_user }}"
-    group="{{ consul_template_group }}"
-    mode="0750"
+- name: Create consul-template directory structure
+  ansible.builtin.file:
+    state: directory
+    path: "{{ item }}"
+    owner: "{{ consul_template_user }}"
+    group: "{{ consul_template_group }}"
+    mode: "0750"
   with_items:
     - "{{ consul_template_home }}"
     - "{{ consul_template_home }}/bin"
     - "{{ consul_template_home }}/config"
     - "{{ consul_template_home }}/templates"
 
-- name: check archive stat
-  stat: path={{ consul_template_staging_area }}/{{ consul_template_archive_file }}
+- name: Check archive stat
+  ansible.builtin.stat:
+    path: "{{ consul_template_staging_area }}/{{ consul_template_archive_file }}"
   register: consul_template_archive_stat
 
-- name: download consul-template binary
-  get_url:
+- name: Download consul-template binary
+  ansible.builtin.get_url:
+    mode: 0644
     url: "{{ consul_template_download_url }}"
     dest: "{{ consul_template_staging_area }}"
-  when: consul_template_archive_stat.stat.exists == False
+  when: not consul_template_archive_stat.stat.exists
 
-- name: unzip the downloaded package
-  unarchive:
+- name: Unzip the downloaded package
+  ansible.builtin.unarchive:
     src: "{{ consul_template_staging_area }}/{{ consul_template_archive_file }}"
     dest: "{{ consul_template_staging_area }}"
     owner: "root"
     group: "root"
-    copy: False
+    copy: false
     creates: "{{ consul_template_staging_area }}/{{ consul_template_binary }}"
   when: not ansible_check_mode
 
-- name: copy consul-template binary into place
-  command: cp {{ consul_template_staging_area }}/{{ consul_template_binary }} {{ consul_template_home }}/bin/{{ consul_template_binary }}
-    creates={{ consul_template_home }}/bin/{{ consul_template_binary }}
+- name: Copy consul-template binary into place
+  ansible.builtin.command: cp {{ consul_template_staging_area }}/{{ consul_template_binary }} {{ consul_template_home }}/bin/{{ consul_template_binary }}
+  args:
+    creates: "{{ consul_template_home }}/bin/{{ consul_template_binary }}"
   when: not ansible_check_mode
 
 - name: Update consul-template permissions
-  file:
+  ansible.builtin.file:
     path: "{{ consul_template_home }}/bin/{{ consul_template_binary }}"
     owner: "root"
     group: "root"
     mode: "0755"
 
-- name: copy consul-template systemd service configuration
-  template: >
-    src={{ consul_template_systemd_template }}
-    dest=/etc/systemd/system/consul-template.service
-    owner=root
-    group=root
-    mode=0755
+- name: Copy consul-template systemd service configuration
+  ansible.builtin.template:
+    src: "{{ consul_template_systemd_template }}"
+    dest: /etc/systemd/system/consul-template.service
+    owner: root
+    group: root
+    mode: 0755
   when: consul_template_use_systemd
 
-- name: copy consul-template upstart service configuration
-  template: >
-    src={{ consul_template_upstart_template }}
-    dest=/etc/init/consul-template.conf
-    owner=root
-    group=root
-    mode=0755
+- name: Copy consul-template upstart service configuration
+  ansible.builtin.template:
+    src: "{{ consul_template_upstart_template }}"
+    dest: /etc/init/consul-template.conf
+    owner: root
+    group: root
+    mode: 0755
   when: consul_template_use_upstart
 
-- name: copy consul-template init.d script
-  template: >
-    src={{ consul_template_initd_template }}
-    dest=/etc/init.d/consul-template
-    owner=root
-    group=root
-    mode=0755
+- name: Copy consul-template init.d script
+  ansible.builtin.template:
+    src: "{{ consul_template_initd_template }}"
+    dest: /etc/init.d/consul-template
+    owner: root
+    group: root
+    mode: 0755
   when: consul_template_use_initd
 
-- name: add consul-template to path through profile.d
-  template: >
-    src=consul-template.sh.j2
-    dest=/etc/profile.d/consul-template.sh
-    owner=root
-    group=root
-    mode=0755
+- name: Add consul-template to path through profile.d
+  ansible.builtin.template:
+    src: consul-template.sh.j2
+    dest: /etc/profile.d/consul-template.sh
+    owner: root
+    group: root
+    mode: 0755
 
-- name: consul-template config file
-  template: >
-    src={{ consul_template_config_file_template }}
-    dest={{ consul_template_home }}/config/{{ consul_template_config_file }}
-    mode={{ consul_template_config_file_mode }}
+- name: Create consul-template config file
+  ansible.builtin.template:
+    src: "{{ consul_template_config_file_template }}"
+    dest: "{{ consul_template_home }}/config/{{ consul_template_config_file }}"
+    mode: "{{ consul_template_config_file_mode }}"
 
-- name: copy template files
-  copy: src="{{ item.src }}" dest="{{ consul_template_home }}/templates/{{ item.src | basename }}"
+- name: Copy template files
+  ansible.builtin.copy:
+    mode: 0640
+    src: "{{ item.src }}"
+    dest: "{{ consul_template_home }}/templates/{{ item.src | basename }}"
   with_items: "{{ consul_template_template_files }}"
   when: consul_template_template_files | length > 0
   notify: restart consul-template
 
-- name: copy template templates
-  template: src={{ item.src }} dest="{{ consul_template_home }}/templates/{{ item.dest if item.dest is defined else item.src | basename | regex_replace('^(.*)\.j2$', '\\1') }}"
+- name: Copy template templates
+  ansible.builtin.template:
+    mode: 0640
+    src: "{{ item.src }}"
+    dest: "{{ consul_template_home }}/templates/{{ item.dest if item.dest is defined else item.src | basename | regex_replace('^(.*).j2$', '\\1') }}"
   with_items: "{{ consul_template_template_templates }}"
   when: consul_template_template_templates | length > 0
   notify: restart consul-template

@@ -1,4 +1,5 @@
-- service: >
-    name=consul-template
-    state=started
-    enabled=yes
+- name: Start consul-template service
+  ansible.builtin.service:
+    name: consul-template
+    state: started
+    enabled: true
