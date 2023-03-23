@@ -93,6 +93,14 @@
     group: root
     mode: 0755
 
+- name: Add consul-template environment for systemd
+  ansible.builtin.template:
+    src: consul-template.env.j2
+    dest: "{{ consul_template_home }}/consul-template.env"
+    owner: root
+    group: root
+    mode: 0600
+
 - name: Create consul-template config file
   ansible.builtin.template:
     src: "{{ consul_template_config_file_template }}"

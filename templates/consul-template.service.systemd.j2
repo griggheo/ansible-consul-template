@@ -6,6 +6,7 @@ After=network-online.target
 [Service]
 User={{ consul_template_user }}
 Group={{ consul_template_group }}
+EnvironmentFile={{ consul_template_home }}/consul-template.env
 {% if consul_template_use_config_dir %}
 ExecStart={{ consul_template_home }}/bin/{{ consul_template_binary }} -config={{ consul_template_home }}/config/
 {% else %}
