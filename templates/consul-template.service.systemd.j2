@@ -7,7 +7,7 @@ After=network-online.target
 User={{ consul_template_user }}
 Group={{ consul_template_group }}
 {% if consul_template_use_config_dir %}
-ExecStart={{ consul_template_home }}/bin/{{ consul_template_binary }} -config={{ consul_template_home }}/config/"
+ExecStart={{ consul_template_home }}/bin/{{ consul_template_binary }} -config={{ consul_template_home }}/config/
 {% else %}
 ExecStart={{ consul_template_home }}/bin/{{ consul_template_binary }} -config={{ consul_template_home }}/config/{{ consul_template_config_file }}
 {% endif %}
