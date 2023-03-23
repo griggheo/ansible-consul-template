@@ -29,3 +29,4 @@ consul_template_manage_user: false
 consul_template_manage_group: false
 consul_template_user: root
 consul_template_group: root
+consul_template_env: {}
