@@ -106,7 +106,7 @@
     dest: "{{ consul_template_home }}/templates/{{ item.src | basename }}"
   with_items: "{{ consul_template_template_files }}"
   when: consul_template_template_files | length > 0
-  notify: restart consul-template
+  notify: Restart consul-template
 
 - name: Copy template templates
   ansible.builtin.template:
@@ -115,4 +115,4 @@
     dest: "{{ consul_template_home }}/templates/{{ item.dest if item.dest is defined else item.src | basename | regex_replace('^(.*).j2$', '\\1') }}"
   with_items: "{{ consul_template_template_templates }}"
   when: consul_template_template_templates | length > 0
-  notify: restart consul-template
+  notify: Restart consul-template
