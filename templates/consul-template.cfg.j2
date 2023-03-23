@@ -1,5 +1,7 @@
 #jinja2: trim_blocks:False
-consul = "{{ consul_template_consul_server }}:{{ consul_template_consul_port }}"
+consul = {
+  addr = "{{ consul_template_consul_server }}:{{ consul_template_consul_port }}"
+}
 {% if consul_template_log_level -%}
 log_level = "{{consul_template_log_level}}"
 {% endif -%}
