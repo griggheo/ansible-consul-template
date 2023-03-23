@@ -16,9 +16,9 @@ consul_template_log_file: /var/log/consul-template
 consul_template_log_level: "INFO"
 consul_template_consul_server: "127.0.0.1"
 consul_template_consul_port: "8500"
-consul_template_use_systemd: false
-consul_template_use_upstart: false
-consul_template_use_initd: false
+consul_template_use_systemd: "{{ ansible_service_mgr == 'systemd' | bool }}"
+consul_template_use_upstart: "{{ ansible_service_mgr == 'upstart' | bool }}"
+consul_template_use_initd: "{{ ansible_service_mgr == 'initd' | bool }}"
 consul_template_systemd_template: "consul-template.service.systemd.j2"
 consul_template_upstart_template: "consul-template.service.upstart.j2"
 consul_template_initd_template: "consul-template.initd.sh.j2"
