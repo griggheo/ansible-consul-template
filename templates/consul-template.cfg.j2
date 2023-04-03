@@ -1,6 +1,9 @@
 #jinja2: trim_blocks:False
 consul = {
   address = "{{ consul_template_consul_server }}:{{ consul_template_consul_port }}"
+  ssl {
+    enabled = {{consul_template_consul_ssl_enabled | to_json}}
+  }
 }
 {% if consul_template_log_level -%}
 log_level = "{{consul_template_log_level}}"
