@@ -17,6 +17,8 @@ wait = "{{consul_template_wait}}"
 template {
   source = "{{ consul_template_home }}/templates/{{ template.name }}"
   destination = "{{ template.dest }}"
+  {% if template.user is defined %}user = "{{ template.user }}"{% endif %}
+  {% if template.group is defined %}group = "{{ template.group }}"{% endif %}
   {% if template.cmd is defined %}command = "{{ template.cmd }}"{% endif %}
   {% if template.perms is defined %}perms = {{ template.perms }}{% endif %}
   {% if template.backup is defined %}backup = {{ template.backup|lower }}{% endif %}
